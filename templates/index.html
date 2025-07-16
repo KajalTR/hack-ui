@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Customer Support Panel</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', 'Segoe UI', sans-serif;
+      background: #fff0f0;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .form-input::placeholder {
+      color: #a66565;
+      opacity: 1;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 1.5rem;
+      background: #d50000;
+    }
+
+    .header-logo {
+      height: 90px;
+      margin-right: 12px;
+    }
+
+    .header-title {
+      font-size: 2rem;
+      font-weight: 600;
+      color: white;
+    }
+
+    .container-search {
+      width: 90%;
+      margin: 1.5rem auto;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ccc;
+    }
+
+    form {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+    }
+
+    .input-wrapper {
+      position: relative;
+      flex: 1;
+      width: 50%;
+    }
+
+    .form-input {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .input-error {
+      border: 2px solid red !important;
+      box-shadow: 0 0 6px red;
+    }
+
+    .input-icons {
+      position: absolute;
+      top: 50%;
+      right: 0.5rem;
+      transform: translateY(-50%);
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .input-icons button {
+      background: transparent;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 0 0.2rem;
+      color: #555;
+      transition: color 0.2s ease;
+    }
+
+    .input-icons button:hover {
+      color: #000;
+    }
+
+    .form-button {
+      padding: 0.6rem 1.2rem;
+      background: #d50000;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .form-button:hover {
+      background: #b71c1c;
+      transform: scale(1.05);
+    }
+
+    .chat-window {
+      width: 90%;
+      margin: 1.5rem auto;
+      padding: 1.5rem;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid #d59191;
+    }
+
+    .chat-window h3 {
+      color: #a66565;
+      margin-bottom: 1rem;
+    }
+
+    .chat-messages {
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 0.5rem;
+      border: 1px solid #d59191;
+      border-radius: 6px;
+      background: #fdfdfd;
+    }
+
+    .chat-message {
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .chat-message p {
+      margin: 0.2rem 0;
+    }
+
+    .feedback-section {
+      margin-top: 1rem;
+    }
+
+    .feedback-section p {
+      margin: 0.5rem 0;
+      font-weight: 500;
+    }
+
+    .feedback-section button {
+      margin-right: 10px;
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    .feedback-section .yes-btn {
+      background: #28a745;
+      color: white;
+    }
+
+    .feedback-section .no-btn {
+      background: #dc3545;
+      color: white;
+    }
+
+    .feedback-section button:hover {
+      opacity: 0.85;
+    }
+
+    @media (max-width: 768px) {
+      .form-button {
+        padding: 0.6rem;
+      }
+
+      .header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .form-input {
+        padding-right: 0.6rem;
+      }
+
+      .input-icons {
+        right: 0.4rem;
+      }
+    }
+
+    .tool-card:hover {
+      transform: scale(1.03);
+      background: #fff2f2;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="/static/hitachi-thumb.png" alt="Hitachi Logo" class="header-logo" />
+    <span class="header-title">
+      <span style="text-transform: uppercase; color: white;">HITACHI</span>
+      <span style="margin-left: 8px; font-weight: 400;">Customer Support Panel</span>
+    </span>
+  </div>
+
+  <div class="container-search">
+    <form method="post" action="/">
+      <div class="input-wrapper">
+        <input
+          type="text"
+          name="user_input"
+          class="form-input"
+          id="userInput"
+          placeholder="Ask the Support Copilot..."
+          required
+        />
+        <div class="input-icons">
+          <button type="button" title="Voice Input"><i class="fas fa-microphone"></i></button>
+          <button type="button" title="Upload File"><i class="fas fa-file-upload"></i></button>
+          <button type="button" title="Stop Getting output"><i class="fas fa-stop"></i></button>
+        </div>
+      </div>
+      <button type="submit" class="form-button">Send</button>
+    </form>
+  </div>
+
+  <div class="chat-window">
+    <h3>Support AI Response</h3>
+    <div class="chat-messages" id="chatMessages">
+      {% if response %}
+      <div class="chat-message">
+        {{ response | safe }}
+      </div>
+
+      <div class="feedback-section" id="feedback-section">
+        <p>Was this response helpful?</p>
+        <button class="yes-btn" onclick="handleYes()">Yes</button>
+        <button class="no-btn" onclick="handleNo()">No, needs more debugging</button>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Tool cards will be injected here -->
+  <div id="toolCardsContainer"></div>
+
+  <script>
+    function handleYes() {
+      const feedback = document.getElementById('feedback-section');
+      const chatMessages = document.getElementById('chatMessages');
+      if (chatMessages) chatMessages.innerHTML = '';
+      if (feedback) feedback.style.display = 'none';
+    }
+
+    function handleNo() {
+      const feedback = document.getElementById('feedback-section');
+      const inputField = document.getElementById('userInput');
+      const chatMessages = document.getElementById('chatMessages');
+
+      if (chatMessages) chatMessages.innerHTML = '';
+      if (feedback) feedback.style.display = 'none';
+      if (inputField) {
+        inputField.focus();
+        inputField.classList.add('input-error');
+        setTimeout(() => inputField.classList.remove('input-error'), 1500);
+      }
+    }
+
+    // Inject tool cards dynamically
+    const cardHTML = `
+      <div class="chat-window">
+        <h3>Select a Tool</h3>
+        <div style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
+          <div class="tool-card" style="flex: 1; min-width: 250px; background: #fff8f8; border: 1px solid #d59191; border-radius: 12px; padding: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08); cursor: pointer;" onclick="alert('SSH connection logic to be added later')">
+            <h4 style="color: #a66565; margin-top: 0;">SSH Connection To Customer Machine</h4>
+            <p style="margin: 0.5rem 0 0;">Initiate a secure remote session with Machine.</p>
+          </div>
+          <div class="tool-card" style="flex: 1; min-width: 250px; background: #fff8f8; border: 1px solid #d59191; border-radius: 12px; padding: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08); cursor: pointer;" onclick="window.open('https://jira.atlassian.com/secure/CreateIssue!default.jspa', '_blank')">
+            <h4 style="color: #a66565; margin-top: 0;">Create JIRA Ticket</h4>
+            <p style="margin: 0.5rem 0 0;">Create a support ticket from conversation context.</p>
+          </div>
+          <div class="tool-card" style="flex: 1; min-width: 250px; background: #fff8f8; border: 1px solid #d59191; border-radius: 12px; padding: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08); cursor: pointer;" onclick="alert('Transcript view logic to be added')">
+            <h4 style="color: #a66565; margin-top: 0;">Mini Transcript</h4>
+            <p style="margin: 0.5rem 0 0;">View recent conversation highlights and summary.</p>
+          </div>
+        </div>
+      </div>
+    `;
+    document.getElementById('toolCardsContainer').innerHTML = cardHTML;
+  </script>
+</body>
+</html>
