@@ -2,311 +2,366 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Customer Support Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hitachi Customer Support Panel</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      font-family: 'Roboto', 'Segoe UI', sans-serif;
-      background: #fff0f0;
-      font-size: 16px;
+      font-family: 'Roboto', sans-serif;
+      background: #f7f8fa;
       color: #333;
-    }
-
-    .form-input::placeholder {
-      color: #a66565;
-      opacity: 1;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     .header {
+      background: #d50000;
+      color: white;
+      padding: 1rem 1rem;
       display: flex;
       align-items: center;
-      padding: 1.5rem;
-      background: #d50000;
+      justify-content: space-between;
     }
 
+    .header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown button {
+      background: white;
+      color: #d50000;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 40px;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+      border-radius: 4px;
+    }
+
+    .dropdown-content a {
+      padding: 12px 16px;
+      display: block;
+      text-decoration: none;
+      color: #333;
+    }
     .header-logo {
-      height: 90px;
-      margin-right: 12px;
+      width: 70px; /* Set the desired width */
+      height: auto; /* Maintain the aspect ratio */
+    }
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
     }
 
-    .header-title {
-      font-size: 2rem;
-      font-weight: 600;
-      color: white;
+    .dropdown:hover .dropdown-content {
+      display: block;
     }
 
-    .container-search {
-      width: 90%;
-      margin: 1.5rem auto;
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .terminal-output {
+      background: #1e1e1e;
+      color: #00ff00;
+      font-family: monospace;
       padding: 1rem;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      flex: 1;
+      overflow-y: auto;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      height: 600px;
+      white-space: pre-wrap;
+    }
+
+    .terminal-input-bar {
+      display: flex;
+      align-items: center;
+      background: #1e1e1e;
+      padding: 0.5rem;
+      border-radius: 0 0 4px 4px;
+    }
+
+    .terminal-prefix {
+      color: #00ff00;
+      margin-right: 0.5rem;
+      font-family: monospace;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .terminal-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #00ff00;
+      font-family: monospace;
+      font-size: 1.2rem;
+    }
+
+    .ask-support-card .terminal-output {
+      background: white !important;
+      color: #333 !important;
       border: 1px solid #ccc;
     }
 
-    form {
+    .ask-support-card .terminal-input-bar {
+      background: white !important;
+    }
+
+    .ask-support-card .terminal-prefix,
+    .ask-support-card .terminal-input {
+      color: #333 !important;
+    }
+
+    .jira-float-btn {
+      position: fixed;
+      left: 2rem;
+      bottom: 2rem;
+      background: #d50000;
+      color: white;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      position: relative;
-    }
-
-    .input-wrapper {
-      position: relative;
-      flex: 1;
-      width: 50%;
-    }
-
-    .form-input {
-      width: 100%;
-      max-width: 100%;
-      box-sizing: border-box;
-      padding: 0.6rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-      transition: border 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .input-error {
-      border: 2px solid red !important;
-      box-shadow: 0 0 6px red;
-    }
-
-    .input-icons {
-      position: absolute;
-      top: 50%;
-      right: 0.5rem;
-      transform: translateY(-50%);
-      display: flex;
-      gap: 0.4rem;
-    }
-
-    .input-icons button {
-      background: transparent;
-      border: none;
-      font-size: 1.1rem;
       cursor: pointer;
-      padding: 0 0.2rem;
-      color: #555;
-      transition: color 0.2s ease;
+      z-index: 1000;
     }
 
-    .input-icons button:hover {
-      color: #000;
+    .jira-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 3rem; /* Increased font size */
     }
 
-    .form-button {
-      padding: 0.6rem 1.2rem;
-      background: #d50000;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s ease, transform 0.2s ease;
-    }
-
-    .form-button:hover {
-      background: #b71c1c;
-      transform: scale(1.05);
-    }
-
-    .chat-window {
-      width: 90%;
-      margin: 1.5rem auto;
+    .jira-modal-content {
+      background: white;
       padding: 1.5rem;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border: 1px solid #d59191;
+      border-radius: 8px;
+      width: 500px;
+      max-width: 90%;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      position: relative;
     }
 
-    .chat-window h3 {
-      color: #a66565;
-      margin-bottom: 1rem;
+    .jira-modal-content textarea {
+      width: 100%;
+      height: 200px;
+      font-family: monospace;
+      padding: 0.1rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
     }
 
-    .chat-messages {
-      max-height: 300px;
-      overflow-y: auto;
-      padding: 0.5rem;
-      border: 1px solid #d59191;
-      border-radius: 6px;
-      background: #fdfdfd;
-    }
-
-    .chat-message {
-      margin-bottom: 1rem;
-      padding: 0.5rem;
-      background: #fff;
-      border-radius: 6px;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-
-    .chat-message p {
-      margin: 0.2rem 0;
-    }
-
-    .feedback-section {
+    .jira-modal-content button {
       margin-top: 1rem;
-    }
-
-    .feedback-section p {
-      margin: 0.5rem 0;
-      font-weight: 500;
-    }
-
-    .feedback-section button {
-      margin-right: 10px;
-      padding: 0.4rem 0.8rem;
+      background: #007bff;
+      color: white;
       border: none;
-      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
       cursor: pointer;
-      font-size: 0.95rem;
     }
 
-    .feedback-section .yes-btn {
-      background: #28a745;
-      color: white;
+    .jira-modal-content .close-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      font-size: 1.25rem;
+      cursor: pointer;
     }
 
-    .feedback-section .no-btn {
-      background: #dc3545;
-      color: white;
-    }
-
-    .feedback-section button:hover {
-      opacity: 0.85;
-    }
-
-    @media (max-width: 768px) {
-      .form-button {
-        padding: 0.6rem;
-      }
-
-      .header {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      form {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .form-input {
-        padding-right: 0.6rem;
-      }
-
-      .input-icons {
-        right: 0.4rem;
-      }
-    }
-
-    .tool-card:hover {
-      transform: scale(1.03);
-      background: #fff2f2;
+    #ssh-terminal-container.hidden,
+    #ssh-placeholder.hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class="header">
+  <header class="header">
     <img src="/static/hitachi-thumb.png" alt="Hitachi Logo" class="header-logo" />
-    <span class="header-title">
-      <span style="text-transform: uppercase; color: white;">HITACHI</span>
-      <span style="margin-left: 8px; font-weight: 400;">Customer Support Panel</span>
-    </span>
-  </div>
+    <h1>Hitachi Customer Support Panel</h1>
+    <div class="dropdown">
+      <button onclick="toggleSSH()"><i class="fas fa-terminal"></i>Customer Machine SSH</button>
+      <div class="dropdown-content">
+        <a href="#" onclick="toggleSSH()">Toggle Terminal</a>
+      </div>
+    </div>
+  </header>
 
-  <div class="container-search">
-    <form method="post" action="/">
-      <div class="input-wrapper">
-        <input
-          type="text"
-          name="user_input"
-          class="form-input"
-          id="userInput"
-          placeholder="Ask the Support Copilot..."
-          required
-        />
-        <div class="input-icons">
-          <button type="button" title="Voice Input"><i class="fas fa-microphone"></i></button>
-          <button type="button" title="Upload File"><i class="fas fa-file-upload"></i></button>
-          <button type="button" title="Stop Getting output"><i class="fas fa-stop"></i></button>
+  <main>
+    <div class="card">
+      <h2>SSH Terminal</h2>
+      <div id="ssh-placeholder">Use this section to securely troubleshoot issues with authorized commands. Click the SSH button above to launch the terminal.</div>
+      <div id="ssh-terminal-container" class="hidden">
+        <div class="terminal-output" id="terminalOutput">smu2@support/</div>
+        <form onsubmit="return runCommand(event)">
+          <div class="terminal-input-bar">
+            <span class="terminal-prefix">smu2@support$</span>
+            <input type="text" id="commandInput" class="terminal-input" placeholder="Enter your command for troubleshooting" autocomplete="off" required />
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="card ask-support-card">
+      <h2>Ask the Support Copilot</h2>
+      <div class="terminal-output" id="chatMessages">Support Copilot is ready to assist you.</div>
+      <form onsubmit="return sendChat(event)">
+        <div class="terminal-input-bar">
+          <span class="terminal-prefix">You:</span>
+          <input type="text" id="chatInput" class="terminal-input" placeholder="Ask the Support Copilot..." autocomplete="off" required />
         </div>
-      </div>
-      <button type="submit" class="form-button">Send</button>
-    </form>
-  </div>
+      </form>
+    </div>
+  </main>
 
-  <div class="chat-window">
-    <h3>Support AI Response</h3>
-    <div class="chat-messages" id="chatMessages">
-      {% if response %}
-      <div class="chat-message">
-        {{ response | safe }}
-      </div>
+  <button class="jira-float-btn" onclick="openJira()">
+    <i class="fas fa-bug"></i> Create Ticket
+  </button>
 
-      <div class="feedback-section" id="feedback-section">
-        <p>Was this response helpful?</p>
-        <button class="yes-btn" onclick="handleYes()">Yes</button>
-        <button class="no-btn" onclick="handleNo()">No, needs more debugging</button>
-      </div>
-      {% endif %}
+  <div class="jira-modal" id="jiraModal">
+    <div class="jira-modal-content">
+      <span class="close-btn" onclick="closeJira()">&times;</span>
+      <h3>Create JIRA Ticket</h3>
+      <textarea id="jiraText"></textarea>
+      <button style="background: #d50000" onclick="submitJira()">Submit</button>
     </div>
   </div>
 
-  <!-- Tool cards will be injected here -->
-  <div id="toolCardsContainer"></div>
-
   <script>
-    function handleYes() {
-      const feedback = document.getElementById('feedback-section');
-      const chatMessages = document.getElementById('chatMessages');
-      if (chatMessages) chatMessages.innerHTML = '';
-      if (feedback) feedback.style.display = 'none';
+    function toggleSSH() {
+      const sshBox = document.getElementById('ssh-terminal-container');
+      const placeholder = document.getElementById('ssh-placeholder');
+      sshBox.classList.toggle('hidden');
+      placeholder.classList.toggle('hidden');
     }
 
-    function handleNo() {
-      const feedback = document.getElementById('feedback-section');
-      const inputField = document.getElementById('userInput');
-      const chatMessages = document.getElementById('chatMessages');
+    async function runCommand(e) {
+      e.preventDefault();
+      const cmd = document.getElementById('commandInput').value;
+      const out = document.getElementById('terminalOutput');
 
-      if (chatMessages) chatMessages.innerHTML = '';
-      if (feedback) feedback.style.display = 'none';
-      if (inputField) {
-        inputField.focus();
-        inputField.classList.add('input-error');
-        setTimeout(() => inputField.classList.remove('input-error'), 1500);
+      const div = document.createElement('div');
+      div.textContent = `smu2@support$ ${cmd}`;
+      out.appendChild(div);
+
+      try {
+        const response = await fetch('/minikube-run', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ command: cmd }),
+        });
+
+        const data = await response.json();
+
+        const res = document.createElement('div');
+        res.textContent = data.output;
+        res.style.whiteSpace = 'pre-wrap';
+        out.appendChild(res);
+      } catch (error) {
+        const err = document.createElement('div');
+        err.textContent = '[Error communicating with backend]';
+        out.appendChild(err);
       }
+
+      document.getElementById('commandInput').value = '';
+      out.scrollTop = out.scrollHeight;
     }
 
-    // Inject tool cards dynamically
-    const cardHTML = `
-      <div class="chat-window">
-        <h3>Select a Tool</h3>
-        <div style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
-          <div class="tool-card" style="flex: 1; min-width: 250px; background: #fff8f8; border: 1px solid #d59191; border-radius: 12px; padding: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08); cursor: pointer;" onclick="alert('SSH connection logic to be added later')">
-            <h4 style="color: #a66565; margin-top: 0;">SSH Connection To Customer Machine</h4>
-            <p style="margin: 0.5rem 0 0;">Initiate a secure remote session with Machine.</p>
-          </div>
-          <div class="tool-card" style="flex: 1; min-width: 250px; background: #fff8f8; border: 1px solid #d59191; border-radius: 12px; padding: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08); cursor: pointer;" onclick="window.open('https://jira.atlassian.com/secure/CreateIssue!default.jspa', '_blank')">
-            <h4 style="color: #a66565; margin-top: 0;">Create JIRA Ticket</h4>
-            <p style="margin: 0.5rem 0 0;">Create a support ticket from conversation context.</p>
-          </div>
-          <div class="tool-card" style="flex: 1; min-width: 250px; background: #fff8f8; border: 1px solid #d59191; border-radius: 12px; padding: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08); cursor: pointer;" onclick="alert('Transcript view logic to be added')">
-            <h4 style="color: #a66565; margin-top: 0;">Mini Transcript</h4>
-            <p style="margin: 0.5rem 0 0;">View recent conversation highlights and summary.</p>
-          </div>
-        </div>
-      </div>
-    `;
-    document.getElementById('toolCardsContainer').innerHTML = cardHTML;
+    async function sendChat(e) {
+      e.preventDefault();
+      const chat = document.getElementById('chatInput');
+      const msgs = document.getElementById('chatMessages');
+
+      const userMessage = document.createElement('div');
+      userMessage.textContent = `You: ${chat.value}`;
+      msgs.appendChild(userMessage);
+
+      try {
+        const response = await fetch('/copilot-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ user_input: chat.value }),
+        });
+
+        const data = await response.json();
+        const botMessage = document.createElement('div');
+        botMessage.innerHTML = `Support Copilot: ${data.reply.replace(/\n/g, "<br>")}`;
+        msgs.appendChild(botMessage);
+      } catch (error) {
+        const errorMessage = document.createElement('div');
+        errorMessage.textContent = '[Error communicating with backend]';
+        msgs.appendChild(errorMessage);
+      }
+
+      chat.value = '';
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    function openJira() {
+      const modal = document.getElementById('jiraModal');
+      const out = document.getElementById('terminalOutput').innerText;
+      document.getElementById('jiraText').value = `### Terminal Output:\n${out}`;
+      modal.style.display = 'flex';
+    }
+
+    function closeJira() {
+      document.getElementById('jiraModal').style.display = 'none';
+    }
+
+    function submitJira() {
+      alert('JIRA ticket created:\n' + document.getElementById('jiraText').value);
+      closeJira();
+    }
   </script>
 </body>
 </html>
